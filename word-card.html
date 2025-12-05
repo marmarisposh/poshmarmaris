@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posh Marmaris | İş Kartı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fff8f8 0%, #eef1ff 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #1a1a1a;
+        }
+
+        .business-card {
+            background: linear-gradient(45deg, hsl(0, 0%, 0%), #1e048f);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            box-shadow: 
+                0 20px 60px rgba(106, 17, 203, 0.1),
+                0 8px 32px rgba(106, 17, 203, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 35px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        .business-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 
+                0 30px 80px rgba(106, 17, 203, 0.15),
+                0 15px 40px rgba(106, 17, 203, 0.08);
+        }
+
+        /* Neon efekti */
+        .neon-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 32px;
+            padding: 2px;
+            background: linear-gradient(45deg, 
+                #6a11cb, #2575fc, #25D366, #C13584);
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .business-card:hover .neon-border {
+            opacity: 1;
+            animation: neonGlow 2s infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        /* Logo ve mağaza adı */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .logo-image {
+            width: 350px;
+            height: 350px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 
+                0 10px 30px rgba(106, 17, 203, 0.15),
+                inset 0 2px 10px rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 0.4s ease;
+        }
+
+        .logo-image:hover {
+            transform: rotateY(10deg) scale(1.05);
+            box-shadow: 
+                0 15px 40px rgba(106, 17, 203, 0.25),
+                inset 0 2px 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .logo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-glow {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            border-radius: 25px;
+            filter: blur(15px);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s ease;
+        }
+
+        .logo-image:hover .logo-glow {
+            opacity: 0.3;
+        }
+
+        .store-name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 3.2rem;
+            color: transparent;
+            background: linear-gradient(45deg, #0681bf, #13b4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .store-location {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1.6rem;
+            color: #13b4ff;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .store-location:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #2575fc, transparent);
+            border-radius: 1px;
+        }
+
+        /* İletişim bilgileri */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, 
+                rgba(248, 249, 255, 0.8) 0%, 
+                rgba(238, 241, 255, 0.4) 100%);
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            transition: left 0.6s ease;
+        }
+
+        .contact-item:hover:before {
+            left: 100%;
+        }
+
+        .contact-item:hover {
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .whatsapp:hover {
+            background: linear-gradient(135deg, 
+                rgba(37, 211, 102, 0.1) 0%, 
+                rgba(18, 140, 126, 0.05) 100%);
+            border-color: rgba(37, 211, 102, 0.3);
+        }
+
+        .instagram:hover {
+            background: linear-gradient(135deg, 
+                rgba(193, 53, 132, 0.1) 0%, 
+                rgba(64, 93, 230, 0.05) 100%);
+            border-color: rgba(193, 53, 132, 0.3);
+        }
+
+        .address:hover {
+            background: linear-gradient(135deg, 
+                rgba(106, 17, 203, 0.1) 0%, 
+                rgba(37, 117, 252, 0.05) 100%);
+            border-color: rgba(106, 17, 203, 0.3);
+        }
+
+        .contact-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover .contact-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .whatsapp .contact-icon {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+
+        .instagram .contact-icon {
+            background: linear-gradient(45deg, #405de6, #C13584);
+        }
+
+        .address .contact-icon {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        }
+
+        .contact-text {
+            flex: 1;
+        }
+
+        .contact-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .contact-detail {
+            color: #2d3436;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .follow-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(45deg, #405de6, #C13584);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 10px;
+            vertical-align: middle;
+            box-shadow: 0 4px 10px rgba(64, 93, 230, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .instagram:hover .follow-badge {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(193, 53, 132, 0.3);
+        }
+
+        /* Adres butonu */
+        .address-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 
+                0 10px 30px rgba(106, 17, 203, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .address-btn:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: left 0.6s ease;
+        }
+
+        .address-btn:hover:after {
+            left: 100%;
+        }
+
+        .address-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 40px rgba(106, 17, 203, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .address-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Footer */
+        .card-footer {
+            text-align: center;
+            margin-top: 35px;
+            color: #636e72;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        /* Modal (Harita için) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            width: 90%;
+            max-width: 500px;
+            padding: 35px;
+            position: relative;
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(40px) scale(0.9);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .modal-close {
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            color: #636e72;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: rgba(106, 17, 203, 0.1);
+            color: #6a11cb;
+            transform: rotate(90deg);
+        }
+
+        .map-container {
+            height: 280px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .map-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .map-container:hover .map-image {
+            transform: scale(1.05);
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                rgba(106, 17, 203, 0.2), 
+                rgba(37, 117, 252, 0.3));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .map-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .address-details {
+            background: rgba(248, 249, 255, 0.6);
+            padding: 22px;
+            border-radius: 18px;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .address-details p {
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: #2d3436;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .address-details i {
+            color: #6a11cb;
+            margin-top: 3px;
+        }
+
+        /* Responsive tasarım */
+        @media (max-width: 480px) {
+            .business-card {
+                padding: 30px 25px;
+                max-width: 380px;
+                border-radius: 28px;
+            }
+
+            .store-name {
+                font-size: 2.8rem;
+            }
+
+            .store-location {
+                font-size: 1.4rem;
+            }
+
+            .contact-item {
+                padding: 10px 15px;
+            }
+
+            .contact-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+            }
+            
+            .logo-image {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .modal-content {
+                padding: 25px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .business-card {
+                padding: 25px 20px;
+            }
+            
+            .store-name {
+                font-size: 2.4rem;
+            }
+            
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .contact-text {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="business-card">
+        <div class="neon-border"></div>
+        
+        <!-- Logo ve Mağaza Adı -->
+        <div class="logo-container">
+            <div class="logo-image">
+                <img src="https://i.imgur.com/bFe0hjg.jpeg" alt="Posh Logo">
+                <div class="logo-glow"></div>
+            </div>
+            <h1 class="store-name">Posh</h1>
+            <div class="store-location">Marmaris</div>
+        </div>
+
+        <!-- İletişim Bilgileri -->
+        <div class="contact-info">
+            <!-- WhatsApp - MESAJ İÇİN -->
+            <a href="https://wa.me/905322002493?text=Merhaba%20Posh%20Marmaris%2C%20bilgi%20almak%20istiyorum." target="_blank" class="contact-item whatsapp">
+                <div class="contact-icon">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <div class="contact-text">
+                    <div class="contact-title">WhatsApp</div>
+                    <div class="contact-detail">Hemen Mesaj Gönder</div>
+                </div>
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://instagram.com/poshmarmaris" target="_blank" class="contact-item instagram">
+                <div class="contact-icon">
+                    <i class="fab fa-instagram"></i>
+                </div>
+                <div class="contact-text">
+                    <div class="contact-title">Instagram</div>
+                    <div class="contact-detail">
+                        <span class="follow-badge">
+                            <i class="fas fa-plus"></i>@poshmarmaris 
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Adres -->
+            <div class="contact-item address" id="showAddress">
+                <div class="contact-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="contact-text">
+                    <div class="contact-title">Konum</div>
+                    <div class="contact-detail">Marmaris "Posh" store</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Konum Butonu -->
+        <button class="address-btn" id="showLocation">
+            <i class="fas fa-map-marked-alt"></i>
+            Konumu Görüntüle
+        </button>
+
+        <!-- Footer -->
+        <div class="card-footer">
+            <p>Premium Alışveriş Deneyimi • Marmaris'in Gözdesi</p>
+        </div>
+    </div>
+
+    <!-- Harita Modal -->
+    <div class="modal" id="locationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Posh Marmaris</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            
+            <div class="map-container">
+                <img src="https://i.imgur.com/0PyiYD2.png" alt="Marmaris Marina" class="map-image">
+            </div>
+            
+            <div class="address-details">
+                <p><i class="fas fa-map-pin"></i> <strong>Tam Adres:</strong> 41 Sokak No:06, 48700 Marmaris/Muğla</p>
+                <p><i class="fas fa-clock"></i> <strong>Çalışma Saatleri:</strong> 10:00 - 00:00 (Her Gün)</p>
+                <p><i class="fas fa-car"></i> <strong>Park:</strong> Mağaza önünde ücretsiz park 11:00 kadar</p>
+                <p><i class="fas fa-star"></i> <strong>Özellik:</strong> Lüks butik & Deniz'e yakın'</p>
+            </div>
+            
+            <a href="https://www.google.com/maps/place/Posh/@36.8511916,28.2736274,17z/data=!3m1!4b1!4m6!3m5!1s0x14bfbd414ec525a1:0xbb8d7324f404520f!8m2!3d36.8511916!4d28.2736274!16s%2Fg%2F11yrtksxq7?hl=fr&entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D" target="_blank" class="address-btn" id="openMaps" style="margin-top: 20px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); text-decoration: none;">
+                <i class="fas fa-external-link-alt"></i>
+                Google Maps'te Aç
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Modal işlemleri
+        const showLocationBtn = document.getElementById('showLocation');
+        const showAddressBtn = document.getElementById('showAddress');
+        const locationModal = document.getElementById('locationModal');
+        const closeModalBtn = document.getElementById('closeModal');
+
+        // WhatsApp numarası - MESAJ İÇİN
+        const whatsappNumber = '905322002493';
+        const whatsappMessage = encodeURIComponent("Merhaba Posh Marmaris, bilgi almak istiyorum.");
+        
+        // WhatsApp bağlantısı - SADECE MESAJ için
+        const whatsappLink = document.querySelector('.whatsapp');
+        whatsappLink.href = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+        
+        // Konum butonuna tıklanınca modalı aç
+        showLocationBtn.addEventListener('click', function() {
+            locationModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Adres alanına tıklanınca modalı aç
+        showAddressBtn.addEventListener('click', function() {
+            locationModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Modalı kapat
+        closeModalBtn.addEventListener('click', function() {
+            locationModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Dışarı tıklayınca modalı kapat
+        window.addEventListener('click', function(event) {
+            if (event.target === locationModal) {
+                locationModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // ESC tuşuna basınca modalı kapat
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && locationModal.style.display === 'flex') {
+                locationModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Logo animasyonu
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoImage = document.querySelector('.logo-image');
+            logoImage.style.opacity = '0';
+            logoImage.style.transform = 'translateY(20px) rotateX(-30deg)';
+            
+            setTimeout(() => {
+                logoImage.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                logoImage.style.opacity = '1';
+                logoImage.style.transform = 'translateY(0) rotateX(0)';
+            }, 300);
+            
+            // Kart öğelerine sıralı animasyon
+            const elements = document.querySelectorAll('.contact-item, .address-btn');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateX(-20px)';
+                
+                setTimeout(() => {
+                    el.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateX(0)';
+                }, 400 + (index * 100));
+            });
+        });
+    </script>
+</body>
+</html>
